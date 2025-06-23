@@ -6,8 +6,9 @@ public class Car {
     private String plate;
     private String model;
     private String brand;
-    private int year;
     private double price; 
+    private int year;
+    
 
     public int getYear() {
         return year;
