@@ -28,8 +28,16 @@ public class CarMenuView {
             new CreateCarView();
         });
         list = new JButton("Listar");
+
+        list.addActionListener(e ->{
+            new ListCarView();
+        });
+
         update = new JButton("Atualizar");
         delete = new JButton("Deletar");
+        delete.addActionListener(e ->{
+            new DeleteCarView();
+        });
 
         mainPanel = new JPanel();
         mainPanel.add(text);

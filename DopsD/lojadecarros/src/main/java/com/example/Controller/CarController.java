@@ -43,4 +43,9 @@ public class CarController {
         carDAO.update(car);
     }
 
+    public Car findCarById(int id) {
+    return carDAO.findById(id);
+}
+
+
 }

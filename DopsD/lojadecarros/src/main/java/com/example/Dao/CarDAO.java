@@ -95,4 +95,30 @@ public class CarDAO {
         return cars;
     }
 
+    public Car findById(int id) {
+    Car car = null;
+
+    try (Connection conn = DataBase.getConnection()) {
+        String sql = "SELECT * FROM car WHERE id = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, id);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            car = new Car();
+            car.setId(rs.getInt("id"));
+            car.setPlate(rs.getString("plate"));
+            car.setModel(rs.getString("model"));
+            car.setBrand(rs.getString("brand"));
+            car.setPrice(rs.getDouble("price"));
+            car.setYear(rs.getInt("year"));
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return car;
+}
+
+
 }
