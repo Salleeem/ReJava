@@ -1,6 +1,7 @@
 package com.example.View;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class CarMenuView {
 
@@ -34,12 +35,16 @@ public class CarMenuView {
         });
 
         update = new JButton("Atualizar");
+        update.addActionListener(e ->{
+            new UpdateCarView();
+        });
+
         delete = new JButton("Deletar");
         delete.addActionListener(e ->{
             new DeleteCarView();
         });
 
-        mainPanel = new JPanel();
+        mainPanel = new JPanel(new GridLayout(5, 1));
         mainPanel.add(text);
         mainPanel.add(create);
         mainPanel.add(list);
@@ -49,6 +54,8 @@ public class CarMenuView {
 
         mainFrame.add(mainPanel);
         mainFrame.setVisible(true);
+
+        
         
     }
 }
