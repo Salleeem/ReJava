@@ -1,4 +1,4 @@
-package DopsD;
+package DopsD.projetosDopsD;
 
 public class HelloWorld {
     public static void main(String[] args) {

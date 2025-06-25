@@ -1,4 +1,4 @@
-package DopsD;
+package DopsD.projetosDopsD;
 
 import java.util.Scanner;
 
