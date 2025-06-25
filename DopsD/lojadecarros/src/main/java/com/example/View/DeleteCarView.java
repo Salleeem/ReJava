@@ -107,7 +107,7 @@ public class DeleteCarView {
                 controller.deleteCar(currentCar.getId());
 
                 JOptionPane.showMessageDialog(mainFrame, "Carro excluído com sucesso!");
-                mainFrame.dispose(); // Fecha a janela após exclusão
+                mainFrame.dispose(); 
             }
         });
 

@@ -35,16 +35,13 @@ public class CreateCarView {
         mainFrame.setSize(500, 400);
         mainFrame.setLocationRelativeTo(null);
 
-        // Definindo BorderLayout no frame para separar as áreas
         mainFrame.setLayout(new BorderLayout(10, 10));
 
-        // Painel do título no topo
         JPanel titlePanel = new JPanel();
         textTitle = new JLabel("Cadastre um carro abaixo:");
         titlePanel.add(textTitle);
         mainFrame.add(titlePanel, BorderLayout.NORTH);
 
-        // Painel do formulário com GridLayout
         JPanel formPanel = new JPanel(new GridLayout(5, 2, 5, 5));
 
         plateTitle = new JLabel("Placa:");
@@ -79,7 +76,6 @@ public class CreateCarView {
 
         mainFrame.add(formPanel, BorderLayout.CENTER);
 
-        // Painel do botão na parte inferior, alinhado à direita
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         register = new JButton("Cadastrar");
         buttonPanel.add(register);
@@ -87,8 +83,6 @@ public class CreateCarView {
 
         mainFrame.setVisible(true);
 
-
-        
         CarController controller = new CarController();
 
         register.addActionListener(e -> {
@@ -102,7 +96,7 @@ public class CreateCarView {
                 controller.createCar(plate, model, brand, price, year);
 
                 JOptionPane.showMessageDialog(mainFrame, "Carro cadastrado com sucesso!");
-                mainFrame.dispose(); // Fecha a janela após o cadastro (opcional)
+                mainFrame.dispose();
 
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(mainFrame, "Preço ou ano inválidos!", "Erro", JOptionPane.ERROR_MESSAGE);
