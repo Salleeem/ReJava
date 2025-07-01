@@ -8,13 +8,10 @@ public class CarController {
     private CarDAO carDAO;
 
     public CarController() {
-
         carDAO = new CarDAO();
-
     }
 
     public void createCar(String plate, String model, String brand, double price, int year) {
-
         Car car = new Car();
 
         car.setPlate(plate);

@@ -2,6 +2,7 @@ package com.example.Model;
 
 public class Grade {
 
+    private Long id;
     private double t1;
     private double t2;
     private double simul;
@@ -52,6 +53,12 @@ public class Grade {
     }
     public void setStudent(Student student) {
         this.student = student;
+    }
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
     
 }

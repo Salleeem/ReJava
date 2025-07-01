@@ -2,6 +2,7 @@ package com.example.Model;
 
 public class Student {
 
+    private Long id;
     private String cpf;
     private String name;
     private String password;
@@ -23,6 +24,12 @@ public class Student {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
     
 }
