@@ -19,4 +19,12 @@ public class SubjectController {
         subjectDAO.createSubject(subject);
 
     }
+
+    public void deleteSubject(int id) {
+        subjectDAO.deleteSubject(id);
+    }
+
+    public void update() {
+
+    }
 }
