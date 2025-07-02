@@ -22,6 +22,7 @@ public class AdminDAO {
                 Admin admin = new Admin();
                 admin.setId(rs.getLong("id"));
                 admin.setCpf(rs.getString("cpf"));
+                admin.setUsername(rs.getString("username"));
                 admin.setPassword(rs.getString("password"));
                 return admin; 
             }

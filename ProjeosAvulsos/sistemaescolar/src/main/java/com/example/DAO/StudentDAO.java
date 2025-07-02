@@ -2,6 +2,7 @@ package com.example.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import com.example.Database;
 import com.example.Model.Student;
@@ -26,4 +27,68 @@ public class StudentDAO {
             e.printStackTrace();
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    public Student login(String cpf, String password) {
+        try (Connection conn = Database.getConnection()) {
+            String sql = "SELECT * FROM student WHERE cpf = ? AND password = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, cpf);
+            stmt.setString(2, password);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Student student = new Student();
+                student.setId(rs.getLong("id"));
+                student.setCpf(rs.getString("cpf"));
+                student.setPassword(rs.getString("password"));
+                return student; 
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }
+

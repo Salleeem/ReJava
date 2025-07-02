@@ -5,15 +5,15 @@ import java.awt.event.*;
 import com.example.DAO.AdminDAO;
 import com.example.Model.Admin;
 
-public class AdminLoginView extends JFrame {
+public class StudentLoginView extends JFrame {
 
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginButton;
     private AdminDAO adminDAO;
 
-    public AdminLoginView() {
-        super("Login do Administrador");
+    public StudentLoginView() {
+        super("Login do Aluno");
 
         adminDAO = new AdminDAO();
 
@@ -63,8 +63,7 @@ public class AdminLoginView extends JFrame {
 
         if (admin != null) {
             JOptionPane.showMessageDialog(this, "Bem-vindo, " + admin.getUsername() + "!");
-            new AdminDashboardView();
-            this.dispose();
+            
         } else {
             JOptionPane.showMessageDialog(this, "Usuário ou senha inválidos", "Erro", JOptionPane.ERROR_MESSAGE);
         }

@@ -54,10 +54,10 @@ public class SubjectDAO {
     }
 
     public List<Subject> list() {
-          List<Subject> subjects = new ArrayList<>();
+        List<Subject> subjects = new ArrayList<>();
 
         try (Connection conn = Database.getConnection()) {
-          
+
             String sql = "SELECT * FROM subject";
             PreparedStatement stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
@@ -76,4 +76,26 @@ public class SubjectDAO {
         return subjects;
 
     }
+
+    public Subject findById(int id) {
+        Subject subject = null;
+
+        try (Connection conn = Database.getConnection()) {
+            String sql = "SELECT * FROM subject WHERE id = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                subject = new Subject();
+                subject.setId(rs.getLong("id"));
+                subject.setName(rs.getString("name"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return subject;
+    }
+
 }

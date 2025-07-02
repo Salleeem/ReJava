@@ -2,10 +2,16 @@ package com.example.View;
 
 import javax.swing.*;
 
+import com.example.View.Teacher.TeacherLoginView;
+
 public class MainView {
 
     private JFrame mainFrame;
-    private JButton cars;
+
+    private JButton adminButton;
+    private JButton teacherButton;
+    private JButton studentButton;
+
     private JLabel welcomeText;
 
     public MainView() {
@@ -16,14 +22,29 @@ public class MainView {
         mainFrame.setLocationRelativeTo(null);
 
         welcomeText = new JLabel("Bem vindo a aplicação, o que deseja fazer?");
-        cars = new JButton("Login de Admin");
-        cars.addActionListener(e ->{
+
+        adminButton = new JButton("Login de Admin");
+        adminButton.addActionListener(e ->{
             new AdminLoginView();
         });
 
+        teacherButton = new JButton("Login do Professor");
+        teacherButton.addActionListener(e ->{
+            new TeacherLoginView();
+        });
+
+        studentButton = new JButton("Login do Aluno");
+        studentButton.addActionListener(e ->{
+            new StudentLoginView();
+        });
+
+        
         JPanel mainPanel = new JPanel();
         mainPanel.add(welcomeText);
-        mainPanel.add(cars);
+        mainPanel.add(adminButton);
+        mainPanel.add(teacherButton);
+        mainPanel.add(studentButton);
+        
 
         mainFrame.add(mainPanel);
         mainFrame.setVisible(true);
