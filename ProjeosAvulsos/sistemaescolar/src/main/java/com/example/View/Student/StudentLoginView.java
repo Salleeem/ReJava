@@ -1,4 +1,4 @@
-package com.example.View;
+package com.example.View.Student;
 
 import javax.swing.*;
 import java.awt.event.*;

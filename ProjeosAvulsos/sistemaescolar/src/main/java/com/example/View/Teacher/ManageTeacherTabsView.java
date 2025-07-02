@@ -12,12 +12,12 @@ import com.example.DAO.TeacherDAO;
 import com.example.Model.Subject;
 import com.example.Model.Teacher;
 
-public class ManageTeacherViewTabs {
+public class ManageTeacherTabsView {
 
     private JFrame frame;
     private JTabbedPane tabbedPane;
 
-    public ManageTeacherViewTabs() {
+    public ManageTeacherTabsView() {
         frame = new JFrame("Painel de Professores");
         frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -205,140 +205,139 @@ public class ManageTeacherViewTabs {
 
         private void loadFields() {
             Teacher selected = (Teacher) teacherCombo.getSelectedItem();
-            if (selected != null) {
-                nameField.setText(selected.getName());
-                cpfField.setText(selected.getCpf());
+            if (selected != null && selected.getPerson() != null) {
+                nameField.setText(selected.getName()); // direto do Teacher
+                cpfField.setText(selected.getPerson().getCpf()); // do Person
                 passwordField.setText(selected.getPassword());
                 subjectCombo.setSelectedItem(selected.getSubject());
+
             }
         }
 
         private void UpdateTeachers() {
             Teacher selected = (Teacher) teacherCombo.getSelectedItem();
-            if (selected == null) {
+            if (selected == null || selected.getPerson() == null) {
                 JOptionPane.showMessageDialog(this, "Selecione um professor.");
                 return;
             }
 
-            String name = nameField.getText();
-            String cpf = cpfField.getText();
-            String password = new String(passwordField.getPassword());
-            Subject subject = (Subject) subjectCombo.getSelectedItem();
+            selected.setName(nameField.getText()); // direto no Teacher
+            selected.getPerson().setCpf(cpfField.getText()); // no Person
+            selected.setPassword(new String(passwordField.getPassword()));
+            selected.setSubject((Subject) subjectCombo.getSelectedItem());
 
-            selected.setName(name);
-            selected.setCpf(cpf);
+            // Atualiza os dados na pessoa
+            selected.getPerson().setCpf(cpf);
+
+            // Atualiza os dados específicos do professor
             selected.setPassword(password);
             selected.setSubject(subject);
 
             teacherController.updateTeacher(selected);
             JOptionPane.showMessageDialog(this, "Professor atualizado com sucesso!");
         }
+
     }
-}
 
-class DeleteTeacherPanel extends JPanel {
+    class DeleteTeacherPanel extends JPanel {
 
-    private JComboBox<Teacher> teacherCombo;
-    private JButton deleteButton;
+        private JComboBox<Teacher> teacherCombo;
+        private JButton deleteButton;
 
-    private TeacherDAO teacherDAO;
-    private TeacherController teacherController;
+        private TeacherDAO teacherDAO;
+        private TeacherController teacherController;
 
-    public DeleteTeacherPanel() {
+        public DeleteTeacherPanel() {
+            teacherDAO = new TeacherDAO();
+            teacherController = new TeacherController();
 
-        teacherDAO = new TeacherDAO();
-        teacherController = new TeacherController();
+            setLayout(null);
+            setSize(400, 200);
 
-        this.setSize(400, 200);
-        this.setLayout(null);
+            JLabel label = new JLabel("Selecione o professor:");
+            label.setBounds(30, 30, 200, 25);
+            add(label);
 
-        JLabel label = new JLabel("Selecione o professor:");
-        label.setBounds(30, 30, 200, 25);
-        this.add(label);
+            teacherCombo = new JComboBox<>();
+            teacherCombo.setBounds(30, 60, 320, 25);
+            add(teacherCombo);
 
-        teacherCombo = new JComboBox<>();
-        teacherCombo.setBounds(30, 60, 320, 25);
-        this.add(teacherCombo);
+            deleteButton = new JButton("Excluir");
+            deleteButton.setBounds(130, 100, 100, 30);
+            add(deleteButton);
 
-        deleteButton = new JButton("Excluir");
-        deleteButton.setBounds(130, 100, 100, 30);
-        this.add(deleteButton);
+            loadTeachers();
 
-        loadTeachers();
+            deleteButton.addActionListener(e -> deleteTeacher());
+        }
 
-        deleteButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                deleteTeacher();
+        private void loadTeachers() {
+            List<Teacher> teachers = teacherDAO.list();
+            teacherCombo.removeAllItems(); // evita duplicação
+
+            for (Teacher t : teachers) {
+                teacherCombo.addItem(t);
             }
-        });
+        }
 
-    }
+        private void deleteTeacher() {
+            Teacher selected = (Teacher) teacherCombo.getSelectedItem();
+            if (selected == null) {
+                JOptionPane.showMessageDialog(this, "Nenhum professor selecionado.");
+                return;
+            }
 
-    private void loadTeachers() {
-        List<Teacher> teachers = teacherDAO.list();
-        for (Teacher t : teachers) {
-            teacherCombo.addItem(t);
+            int confirm = JOptionPane.showConfirmDialog(
+                    this,
+                    "Tem certeza que deseja excluir o professor \"" + selected.getName() + "\"?",
+                    "Confirmação",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                teacherController.deleteTeacher(selected.getId()); // Só remove o professor
+                JOptionPane.showMessageDialog(this, "Professor excluído com sucesso!");
+                loadTeachers(); // Atualiza a lista
+            }
         }
     }
 
-    private void deleteTeacher() {
-        Teacher selected = (Teacher) teacherCombo.getSelectedItem();
-        if (selected == null) {
-            JOptionPane.showMessageDialog(this, "Nenhum professor selecionado.");
-            return;
+    class ListTeacherPanel extends JPanel {
+
+        private JTable table;
+        private JScrollPane scrollPane;
+
+        public ListTeacherPanel() {
+
+            this.setSize(600, 400);
+            this.setLayout(null);
+            setLayout(null);
+
+            String[] columnNames = { "ID", "Nome", "CPF", "Matéria" };
+            DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+
+            table = new JTable(model);
+            scrollPane = new JScrollPane(table);
+            scrollPane.setBounds(20, 20, 540, 300);
+            this.add(scrollPane);
+
+            loadTeachers(model);
+
+            this.setVisible(true);
         }
 
-        int confirm = JOptionPane.showConfirmDialog(
-                this,
-                "Tem certeza que deseja excluir o professor \"" + selected.getName() + "\"?",
-                "Confirmação",
-                JOptionPane.YES_NO_OPTION);
+        private void loadTeachers(DefaultTableModel model) {
+            TeacherDAO teacherDAO = new TeacherDAO();
+            List<Teacher> teachers = teacherDAO.list();
 
-        if (confirm == JOptionPane.YES_OPTION) {
-            teacherController.deleteTeacher(selected.getId()); // método no Controller
-            JOptionPane.showMessageDialog(this, "Professor excluído com sucesso!");
-
-        }
-
-    }
-}
-
-class ListTeacherPanel extends JPanel {
-
-    private JTable table;
-    private JScrollPane scrollPane;
-
-    public ListTeacherPanel() {
-
-        this.setSize(600, 400);
-        this.setLayout(null);
-        setLayout(null);
-
-        String[] columnNames = { "ID", "Nome", "CPF", "Matéria" };
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
-
-        table = new JTable(model);
-        scrollPane = new JScrollPane(table);
-        scrollPane.setBounds(20, 20, 540, 300);
-        this.add(scrollPane);
-
-        loadTeachers(model);
-
-        this.setVisible(true);
-    }
-
-    private void loadTeachers(DefaultTableModel model) {
-        TeacherDAO teacherDAO = new TeacherDAO();
-        List<Teacher> teachers = teacherDAO.list();
-
-        for (Teacher t : teachers) {
-            Object[] rowData = {
-                    t.getId(),
-                    t.getName(),
-                    t.getCpf(),
-                    (t.getSubject() != null) ? t.getSubject().getName() : "Sem matéria"
-            };
-            model.addRow(rowData);
+            for (Teacher t : teachers) {
+                Object[] rowData = {
+                        t.getId(),
+                        t.getName(),
+                        t.getCpf(),
+                        (t.getSubject() != null) ? t.getSubject().getName() : "Sem matéria"
+                };
+                model.addRow(rowData);
+            }
         }
     }
 }

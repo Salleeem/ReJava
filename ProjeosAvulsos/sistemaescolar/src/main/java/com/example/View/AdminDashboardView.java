@@ -2,7 +2,8 @@ package com.example.View;
 
 import javax.swing.*;
 
-import com.example.View.Teacher.ManageTeacherViewTabs;
+import com.example.View.Teacher.ManageTeacherTabsView;
+import com.example.View.Student.ManageStudentTabsView;
 
 import java.awt.event.*;
 
@@ -25,7 +26,7 @@ public class AdminDashboardView {
 
         manageTeacherButton = new JButton("Gerenciar Professores");
         manageTeacherButton.addActionListener(e ->{
-            new ManageTeacherViewTabs();
+            new ManageTeacherTabsView();
         });
         manageTeacherButton.setBounds(100, 70, 200, 30);
         mainFrame.add(manageTeacherButton);
@@ -38,9 +39,7 @@ public class AdminDashboardView {
 
         manageStudentButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Chamar a tela de alunos
-                JOptionPane.showMessageDialog(mainFrame, "Abrindo gerenciamento de alunos...");
-                // new StudentView(); etc.
+                new ManageStudentTabsView();
             }
         });
 

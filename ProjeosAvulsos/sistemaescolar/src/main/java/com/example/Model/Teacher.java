@@ -4,7 +4,7 @@ public class Teacher {
 
     private long id;
     private String name;
-    private String cpf;
+    private Person person;
     private Subject subject;
     private String password;
 
@@ -29,12 +29,12 @@ public class Teacher {
         this.name = name;
     }
 
-    public String getCpf() {
-        return cpf;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public Subject getSubject() {

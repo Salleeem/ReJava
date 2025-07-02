@@ -6,31 +6,44 @@ import java.sql.ResultSet;
 
 import com.example.Database;
 import com.example.Model.Admin;
+import com.example.Model.Person;
 
 public class AdminDAO {
 
     public Admin login(String cpf, String password) {
-        try (Connection conn = Database.getConnection()) {
-            String sql = "SELECT * FROM admin WHERE cpf = ? AND password = ?";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, cpf);
-            stmt.setString(2, password);
+    try (Connection conn = Database.getConnection()) {
+        // Consulta com JOIN entre admin e person
+        String sql = "SELECT a.id as admin_id, a.username, a.password, p.id as person_id, p.cpf " +
+                     "FROM admin a " +
+                     "JOIN person p ON a.person_id = p.id " +
+                     "WHERE p.cpf = ? AND a.password = ?";
 
-            ResultSet rs = stmt.executeQuery();
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, cpf);
+        stmt.setString(2, password);
 
-            if (rs.next()) {
-                Admin admin = new Admin();
-                admin.setId(rs.getLong("id"));
-                admin.setCpf(rs.getString("cpf"));
-                admin.setUsername(rs.getString("username"));
-                admin.setPassword(rs.getString("password"));
-                return admin; 
-            }
+        ResultSet rs = stmt.executeQuery();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (rs.next()) {
+            Admin admin = new Admin();
+            admin.setId(rs.getLong("admin_id"));
+            admin.setUsername(rs.getString("username"));
+            admin.setPassword(rs.getString("password"));
+
+            // Cria e seta o objeto Person dentro do Admin
+            Person person = new Person();
+            person.setId(rs.getLong("person_id"));
+            person.setCpf(rs.getString("cpf"));
+            admin.setPerson(person);
+
+            return admin;
         }
 
-        return null;
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+
+    return null;
+}
+
 }

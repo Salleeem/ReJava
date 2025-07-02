@@ -3,7 +3,7 @@ package com.example.Model;
 public class Admin {
     private Long id;
     private String username;
-    private String cpf;
+    private Person person;
     private String password;
 
     // Getters e setters
@@ -22,11 +22,11 @@ public class Admin {
         this.username = username;
     }
 
-    public String getCpf() {
-        return cpf;
+    public Person getPerson() {
+        return person;
     }
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public String getPassword() {

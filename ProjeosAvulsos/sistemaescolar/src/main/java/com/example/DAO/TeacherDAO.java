@@ -75,10 +75,10 @@ public class TeacherDAO {
                 teacher.setName(rs.getString("name"));
                 teacher.setCpf(rs.getString("cpf"));
                 teacher.setPassword(rs.getString("password"));
-                int subjectId = rs.getInt("subject_id"); // 1. pega o ID da matéria do professor
+                int subjectId = rs.getInt("subject_id");
                 SubjectDAO subjectDAO = new SubjectDAO();
-                Subject subject = subjectDAO.findById(subjectId); // 2. busca no banco
-                teacher.setSubject(subject); // 3. seta no professor
+                Subject subject = subjectDAO.findById(subjectId); 
+                teacher.setSubject(subject); 
 
                 teachers.add(teacher);
 

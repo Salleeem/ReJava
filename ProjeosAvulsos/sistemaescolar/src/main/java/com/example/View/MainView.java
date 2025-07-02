@@ -2,6 +2,7 @@ package com.example.View;
 
 import javax.swing.*;
 
+import com.example.View.Student.StudentLoginView;
 import com.example.View.Teacher.TeacherLoginView;
 
 public class MainView {
