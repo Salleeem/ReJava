@@ -23,9 +23,8 @@ public class ManageTeacherViewTabs {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLocationRelativeTo(null);
 
-        tabbedPane = new JTabbedPane(JTabbedPane.TOP); // Alterado para mostrar as abas no topo
+        tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 
-        // Adiciona abas com views existentes
         tabbedPane.addTab("Criar", null, new CreateTeacherPanel(), "Cadastrar novo professor");
         tabbedPane.addTab("Editar", null, new UpdateTeacherPanel(), "Atualizar dados de professor");
         tabbedPane.addTab("Excluir", null, new DeleteTeacherPanel(), "Excluir professor");
@@ -144,7 +143,7 @@ public class ManageTeacherViewTabs {
 
             teacherCombo = new JComboBox<>();
             teacherCombo.setBounds(20, 50, 340, 25);
-            teacherCombo.addActionListener(e -> carregarCampos());
+            teacherCombo.addActionListener(e -> loadFields());
             this.add(teacherCombo);
 
             JLabel nameLabel = new JLabel("Nome:");
@@ -181,30 +180,30 @@ public class ManageTeacherViewTabs {
 
             updateButton = new JButton("Atualizar");
             updateButton.setBounds(130, 260, 120, 30);
-            updateButton.addActionListener(e -> atualizarProfessor());
+            updateButton.addActionListener(e -> UpdateTeachers());
             this.add(updateButton);
 
-            carregarProfessores();
-            carregarMaterias();
+            loadTeachers();
+            loadSubjects();
 
             this.setVisible(true);
         }
 
-        private void carregarProfessores() {
+        private void loadTeachers() {
             List<Teacher> teachers = teacherDAO.list();
             for (Teacher t : teachers) {
                 teacherCombo.addItem(t);
             }
         }
 
-        private void carregarMaterias() {
+        private void loadSubjects() {
             List<Subject> subjects = subjectDAO.list();
             for (Subject s : subjects) {
                 subjectCombo.addItem(s);
             }
         }
 
-        private void carregarCampos() {
+        private void loadFields() {
             Teacher selected = (Teacher) teacherCombo.getSelectedItem();
             if (selected != null) {
                 nameField.setText(selected.getName());
@@ -214,7 +213,7 @@ public class ManageTeacherViewTabs {
             }
         }
 
-        private void atualizarProfessor() {
+        private void UpdateTeachers() {
             Teacher selected = (Teacher) teacherCombo.getSelectedItem();
             if (selected == null) {
                 JOptionPane.showMessageDialog(this, "Selecione um professor.");
@@ -269,7 +268,7 @@ class DeleteTeacherPanel extends JPanel {
 
         deleteButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                deletarProfessor();
+                deleteTeacher();
             }
         });
 
@@ -282,7 +281,7 @@ class DeleteTeacherPanel extends JPanel {
         }
     }
 
-    private void deletarProfessor() {
+    private void deleteTeacher() {
         Teacher selected = (Teacher) teacherCombo.getSelectedItem();
         if (selected == null) {
             JOptionPane.showMessageDialog(this, "Nenhum professor selecionado.");
@@ -323,12 +322,12 @@ class ListTeacherPanel extends JPanel {
         scrollPane.setBounds(20, 20, 540, 300);
         this.add(scrollPane);
 
-        carregarProfessores(model);
+        loadTeachers(model);
 
         this.setVisible(true);
     }
 
-    private void carregarProfessores(DefaultTableModel model) {
+    private void loadTeachers(DefaultTableModel model) {
         TeacherDAO teacherDAO = new TeacherDAO();
         List<Teacher> teachers = teacherDAO.list();
 
