@@ -1,6 +1,7 @@
 package com.example.Controller;
 
 import com.example.DAO.TeacherDAO;
+import com.example.Model.Person;
 import com.example.Model.Subject;
 import com.example.Model.Teacher;
 
@@ -14,9 +15,11 @@ public class TeacherController {
 
     public void createTeacher(String name, String cpf, String password, Subject subject) {
         Teacher teacher = new Teacher();
+        Person person = new Person();
 
         teacher.setName(name);
-        teacher.setCpf(cpf);
+        person.setCpf(cpf);
+        teacher.setPerson(person);
         teacher.setPassword(password);
         teacher.setSubject(subject);
 

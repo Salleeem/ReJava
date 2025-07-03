@@ -7,6 +7,10 @@ public class Student {
     private String name;
     private String password;
 
+    public String toString() {
+        return name;
+    }
+
     public String getName() {
         return name;
     }
@@ -25,10 +29,10 @@ public class Student {
     public void setId(Long id) {
         this.id = id;
     }
-    public Person getPerosn() {
+    public Person getPerson() {
         return person;
     }
-    public void setPerosn(Person person) {
+    public void setPerson(Person person) {
         this.person = person;
     }
     
