@@ -1,4 +1,4 @@
-package com.example.View;
+package com.example.View.Admin;
 
 import javax.swing.*;
 
@@ -13,14 +13,14 @@ public class AdminDashboardView {
     private JButton manageTeacherButton;
     private JButton manageStudentButton;
 
-    public AdminDashboardView() {
+    public AdminDashboardView(String adminUsername) {
         mainFrame = new JFrame("Painel do Administrador");
         mainFrame.setSize(400, 250);
         mainFrame.setLayout(null);
         mainFrame.setLocationRelativeTo(null); // Centraliza na tela
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JLabel titleLabel = new JLabel("Bem-vindo, Administrador");
+        JLabel titleLabel = new JLabel("Bem-vindo, " + adminUsername);
         titleLabel.setBounds(110, 20, 200, 30);
         mainFrame.add(titleLabel);
 

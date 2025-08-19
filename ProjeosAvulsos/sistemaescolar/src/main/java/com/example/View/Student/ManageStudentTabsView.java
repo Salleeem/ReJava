@@ -22,11 +22,7 @@ import javax.swing.text.MaskFormatter;
 
 import com.example.Controller.StudentController;
 import com.example.DAO.StudentDAO;
-import com.example.DAO.TeacherDAO;
 import com.example.Model.Student;
-import com.example.Model.Student;
-
-
 
 public class ManageStudentTabsView {
     private JFrame frame;

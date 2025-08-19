@@ -6,9 +6,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.Model.Teacher;
 import com.example.Model.Person;
 import com.example.Model.Subject;
-import com.example.Model.Teacher;
 
 import com.example.Database;
 
@@ -43,12 +43,13 @@ public class TeacherDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
     }
 
     public void deleteTeacher(long id) {
         try (Connection conn = Database.getConnection()) {
 
-            //Primeiro precisa fazer a busca do "person_id" associado
+            // Primeiro precisa fazer a busca do "person_id" associado
             String selectSql = "SELECT person_id FROM teacher WHERE id = ?";
             PreparedStatement selectStmt = conn.prepareStatement(selectSql);
             selectStmt.setLong(1, id);
@@ -56,23 +57,23 @@ public class TeacherDAO {
 
             long personId = -1;
             if (rs.next()) {
-                personId =  rs.getLong("person_id");
+                personId = rs.getLong("person_id");
             }
 
-            //Agora sim deletamos o professor
+            // Agora sim deletamos o professor
             String deleteTeacherSql = "DELETE FROM teacher WHERE id = ?";
             PreparedStatement deleteTeacherStmt = conn.prepareStatement(deleteTeacherSql);
             deleteTeacherStmt.setLong(1, id);
             deleteTeacherStmt.executeUpdate();
 
-            //E agora deletamos o person para não deixar "Lixo" no banco
+            // E agora deletamos o person para não deixar "Lixo" no banco
             if (personId != -1) {
                 String deletePersonSql = "DELETE FROM person WHERE id = ?";
                 PreparedStatement deletePersonStmt = conn.prepareStatement(deletePersonSql);
-                deletePersonStmt.setLong(1,personId);
+                deletePersonStmt.setLong(1, personId);
                 deletePersonStmt.executeUpdate();
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -143,6 +144,42 @@ public class TeacherDAO {
         }
 
         return teachers;
+    }
+
+    public Teacher login(String cpf, String password) {
+        try (Connection conn = Database.getConnection()) {
+            // Consulta com JOIN entre teacher e person
+            String sql = "SELECT t.id as teacher_id, t.name, t.password, p.id as person_id, p.cpf " +
+                    "FROM teacher t " +
+                    "JOIN person p ON t.person_id = p.id " +
+                    "WHERE p.cpf = ? AND t.password = ?";
+
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, cpf);
+            stmt.setString(2, password);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Teacher teacher = new Teacher();
+                teacher.setId(rs.getLong("teacher_id"));
+                teacher.setName(rs.getString("name"));
+                teacher.setPassword(rs.getString("password"));
+
+                // Cria e seta o objeto Person dentro do Teacher
+                Person person = new Person();
+                person.setId(rs.getLong("person_id"));
+                person.setCpf(rs.getString("cpf"));
+                teacher.setPerson(person);
+
+                return teacher;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 }

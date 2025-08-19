@@ -1,4 +1,4 @@
-package com.example.View;
+package com.example.View.Admin;
 
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
@@ -73,7 +73,7 @@ public class AdminLoginView extends JFrame {
 
         if (admin != null) {
             JOptionPane.showMessageDialog(this, "Bem-vindo, " + admin.getUsername() + "!");
-            new AdminDashboardView();
+            new AdminDashboardView(admin.getUsername());
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Usuário ou senha inválidos", "Erro", JOptionPane.ERROR_MESSAGE);

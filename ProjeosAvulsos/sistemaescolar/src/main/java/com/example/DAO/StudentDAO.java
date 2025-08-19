@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.Database;
-import com.example.Model.Person;
 import com.example.Model.Student;
+import com.example.Model.Person;
 
 public class StudentDAO {
 
@@ -135,5 +135,41 @@ public class StudentDAO {
         return students;
 
     }
+
+    public Student login(String cpf, String password) {
+    try (Connection conn = Database.getConnection()) {
+
+        // Consulta com JOIN entre student e person
+        String sql = "SELECT s.id as student_id, s.password, p.id as person_id, p.cpf " +
+                     "FROM student s " +
+                     "JOIN person p ON s.person_id = p.id " +
+                     "WHERE p.cpf = ? AND a.password = ?";
+
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, cpf);
+        stmt.setString(2, password);
+
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            Student student = new Student();
+            student.setId(rs.getLong("student_id"));
+            student.setPassword(rs.getString("password"));
+
+            // Cria e seta o objeto Person dentro do Student
+            Person person = new Person();
+            person.setId(rs.getLong("person_id"));
+            person.setCpf(rs.getString("cpf"));
+            student.setPerson(person);
+
+            return student;
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return null;
+}
 
 }
